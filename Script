@@ -1,0 +1,179 @@
+-- Variáveis principais
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+-- Função para criar o menu
+local function createMenu()
+    -- Criar o Frame do menu
+    local menuFrame = Instance.new("Frame")
+    menuFrame.Size = UDim2.new(0, 300, 0, 400)
+    menuFrame.Position = UDim2.new(0, 50, 0, 50)
+    menuFrame.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+    menuFrame.Parent = screenGui
+    
+    -- Criar o título do menu
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Size = UDim2.new(1, 0, 0, 40)
+    titleLabel.Text = "Menu"
+    titleLabel.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
+    titleLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+    titleLabel.Parent = menuFrame
+
+    -- Criar o botão de fechar (-)
+    local closeButton = Instance.new("TextButton")
+    closeButton.Size = UDim2.new(0, 40, 0, 40)
+    closeButton.Position = UDim2.new(1, -40, 0, 0)
+    closeButton.Text = "-"
+    closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    closeButton.Parent = titleLabel
+    
+    -- Criar o botão de excluir (×)
+    local deleteButton = Instance.new("TextButton")
+    deleteButton.Size = UDim2.new(0, 40, 0, 40)
+    deleteButton.Position = UDim2.new(1, -80, 0, 0)
+    deleteButton.Text = "×"
+    deleteButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    deleteButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    deleteButton.Parent = titleLabel
+    
+    -- Criar o botão @ para reabrir o menu
+    local reopenButton = Instance.new("TextButton")
+    reopenButton.Size = UDim2.new(0, 40, 0, 40)
+    reopenButton.Position = UDim2.new(0, 50, 0, 50)
+    reopenButton.Text = "@"
+    reopenButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+    reopenButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    reopenButton.Visible = false
+    reopenButton.Parent = screenGui
+
+    -- Função para esconder o menu
+    local function hideMenu()
+        -- Esconde o conteúdo do menu e mostra o @
+        menuFrame.Visible = false
+        reopenButton.Visible = true
+    end
+    
+    -- Função para excluir o menu
+    local function deleteMenu()
+        menuFrame:Destroy()
+    end
+    
+    -- Função para reabrir o menu ao clicar no @
+    local function reopenMenu()
+        menuFrame.Visible = true
+        reopenButton.Visible = false
+    end
+    
+    -- Conectar os botões aos eventos
+    closeButton.MouseButton1Click:Connect(hideMenu)
+    deleteButton.MouseButton1Click:Connect(deleteMenu)
+    reopenButton.MouseButton1Click:Connect(reopenMenu)
+    
+    -- Criar o switch Autofarm
+    local autofarmSwitch = Instance.new("TextButton")
+    autofarmSwitch.Size = UDim2.new(0, 200, 0, 40)
+    autofarmSwitch.Position = UDim2.new(0, 50, 0, 100)
+    autofarmSwitch.Text = "Autofarm: OFF"
+    autofarmSwitch.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+    autofarmSwitch.TextColor3 = Color3.fromRGB(0, 0, 0)
+    autofarmSwitch.Parent = menuFrame
+    
+    -- Alternar o switch Autofarm
+    local autofarmOn = false
+    autofarmSwitch.MouseButton1Click:Connect(function()
+        autofarmOn = not autofarmOn
+        if autofarmOn then
+            autofarmSwitch.Text = "Autofarm: ON"
+            autofarmSwitch.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+        else
+            autofarmSwitch.Text = "Autofarm: OFF"
+            autofarmSwitch.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+        end
+    end)
+    
+    -- Criar o dropdown
+    local dropdown = Instance.new("TextButton")
+    dropdown.Size = UDim2.new(0, 200, 0, 40)
+    dropdown.Position = UDim2.new(0, 50, 0, 150)
+    dropdown.Text = "Select Option"
+    dropdown.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
+    dropdown.TextColor3 = Color3.fromRGB(255, 255, 255)
+    dropdown.Parent = menuFrame
+    
+    -- Criar o menu de opções do dropdown
+    local dropdownMenu = Instance.new("Frame")
+    dropdownMenu.Size = UDim2.new(0, 200, 0, 100)
+    dropdownMenu.Position = UDim2.new(0, 50, 0, 190)
+    dropdownMenu.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+    dropdownMenu.Visible = false
+    dropdownMenu.Parent = menuFrame
+    
+    local option1 = Instance.new("TextButton")
+    option1.Size = UDim2.new(1, 0, 0, 30)
+    option1.Position = UDim2.new(0, 0, 0, 0)
+    option1.Text = "BEHID"
+    option1.TextColor3 = Color3.fromRGB(0, 0, 0)
+    option1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    option1.Parent = dropdownMenu
+    
+    local option2 = Instance.new("TextButton")
+    option2.Size = UDim2.new(1, 0, 0, 30)
+    option2.Position = UDim2.new(0, 0, 0, 30)
+    option2.Text = "ABOVE"
+    option2.TextColor3 = Color3.fromRGB(0, 0, 0)
+    option2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    option2.Parent = dropdownMenu
+    
+    local option3 = Instance.new("TextButton")
+    option3.Size = UDim2.new(1, 0, 0, 30)
+    option3.Position = UDim2.new(0, 0, 0, 60)
+    option3.Text = "FRONT"
+    option3.TextColor3 = Color3.fromRGB(0, 0, 0)
+    option3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    option3.Parent = dropdownMenu
+    
+    -- Mostrar e esconder o dropdown
+    dropdown.MouseButton1Click:Connect(function()
+        dropdownMenu.Visible = not dropdownMenu.Visible
+    end)
+    
+    -- Selecionar uma opção
+    local selectedOption = ""
+    option1.MouseButton1Click:Connect(function()
+        dropdown.Text = "BEHID"
+        selectedOption = "BEHID"
+        dropdownMenu.Visible = false
+    end)
+    option2.MouseButton1Click:Connect(function()
+        dropdown.Text = "ABOVE"
+        selectedOption = "ABOVE"
+        dropdownMenu.Visible = false
+    end)
+    option3.MouseButton1Click:Connect(function()
+        dropdown.Text = "FRONT"
+        selectedOption = "FRONT"
+        dropdownMenu.Visible = false
+    end)
+    
+    -- Função de teletransporte
+    local function teleportToOtherPlayer()
+        if not autofarmOn then return end
+        
+        -- Encontrar todos os jogadores
+        local closestPlayer = nil
+        local minDistance = math.huge
+        
+        for _, otherPlayer in pairs(game.Players:GetPlayers()) do
+            if otherPlayer ~= player and otherPlayer.Team ~= player.Team then
+                local otherCharacter = otherPlayer.Character
+                if otherCharacter and otherCharacter:FindFirstChild("HumanoidRootPart") then
+                    local distance = (otherCharacter.HumanoidRootPart.Position - character.HumanoidRootPart.Position).magnitude
+                    if distance < minDistance then
+                        closestPlayer = otherPlayer
+                        minDistance = distance
+                    end
+                end
